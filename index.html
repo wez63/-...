@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموقع الشامل لاختبارات أساسيات التصميم في الأمن السيبراني - ITBS205</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5; /* لون بنفسجي تقني مميز لمادة التصميم */
+            --primary-dark: #312e81;
+            --secondary-color: #6366f1;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            margin: 0 0 8px 0;
+            font-size: 1.85rem;
+            font-weight: 700;
+        }
+
+        p.subtitle {
+            color: #475569;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* حاوية التبويبات مع دعم التمرير الأفقي للجوال */
+        .tabs-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .tabs-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 6px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            scrollbar-width: thin;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .tabs-container::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .tab-btn {
+            white-space: nowrap;
+            padding: 10px 16px;
+            background-color: #f1f5f9;
+            color: #334155;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: #e2e8f0;
+            color: var(--primary-dark);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 -2px 10px rgba(79, 70, 229, 0.2);
+        }
+
+        /* محتوى التبويبات */
+        .section-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            margin: 0;
+            font-size: 1.3rem;
+            border-right: 4px solid var(--primary-color);
+            padding-right: 10px;
+        }
+
+        .question-count-badge {
+            background-color: #e0e7ff;
+            color: #3730a3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .question-card {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            direction: ltr;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            white-space: pre-line; /* لدعم النصوص متعددة الأسطر */
+        }
+
+        .options-group {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 12px;
+            margin-top: 3px;
+            accent-color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* تنسيقات التصحيح */
+        .correct-answer {
+            background-color: #d1fae5 !important;
+            border-color: var(--success-color) !important;
+            color: #065f46 !important;
+            font-weight: bold;
+        }
+
+        .wrong-answer {
+            background-color: #fee2e2 !important;
+            border-color: var(--danger-color) !important;
+            color: #991b1b !important;
+        }
+
+        .submit-area {
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .score-display {
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>بنك أسئلة أساسيات التصميم في الأمن السيبراني</h1>
+        <p class="subtitle">شامل لجميع الوحدات، الأنشطة، الواجبات، واختبارات الميد والفاينل (ITBS205)</p>
+    </header>
+
+    <div class="tabs-wrapper">
+        <div class="tabs-container" id="tabsBar">
+            </div>
+    </div>
+
+    <form id="quizForm">
+        <div id="contentSections">
+            </div>
+    </form>
+</div>
+
+<script>
+    // قاعدة البيانات الشاملة المستخرجة بالكامل من ملفات المادة الثلاثة المرفقة
+    const completeDatabase = [
+        // ==========================================
+        // 1. الوحدة الأولى (Unit 1)
+        // ==========================================
+        {
+            id: "u1",
+            title: "الوحدة 1: مبادئ التصميم ومجالات الأمن",
+            questions: [
+                {
+                    q: "______ is one of the cybersecurity domains that making sure their device is secure and can be trusted.",
+                    opts: ["Endpoint security", "Network security", "Data security", "Application security"],
+                    ans: 0
+                },
+                {
+                    q: "What does the CIA Triad stand for in cybersecurity?",
+                    opts: [
+                        "Control, Integrity, and Authentication",
+                        "Confidentiality, Integrity, and Availability",
+                        "Confidentiality, Isolation, and Access",
+                        "Compliance, Investigation, and Accessibility"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Cybersecurity design principle can a mapping to certification domains like:",
+                    opts: ["CISSP", "OCA", "OCP", "ICDL"],
+                    ans: 0
+                },
+                {
+                    q: "The history of secure design principles returns to Saltzer and Schroeder in:",
+                    opts: ["1970", "1975", "1950", "1955"],
+                    ans: 1
+                },
+                {
+                    q: "______ is one of the cybersecurity domains that give a quick response for any problem.",
+                    opts: ["Endpoint security", "Network security", "Response", "Application security"],
+                    ans: 2
+                },
+                {
+                    q: "______ is one of the cybersecurity domains that making sure that user who is claim to be, and have the right access.",
+                    opts: ["Endpoint security", "Identity and access management", "Response", "Application security"],
+                    ans: 1
+                },
+                {
+                    q: "The diagram that shows the relationships among different entities like: builder, marketing, trade, and buyer is:",
+                    opts: ["System context diagram", "Business context diagram", "Architecture overview diagram", "All are false"],
+                    ans: 1
+                },
+                {
+                    q: "The diagram that consists of project database, scheduler, report, and alerts is:",
+                    opts: ["System context diagram", "Business context diagram", "Architecture overview diagram", "All are false"],
+                    ans: 0
+                },
+                {
+                    q: "The diagram that consists of project management system, finance system, blueprints, permitting system, and GUI is:",
+                    opts: ["System context diagram", "Business context diagram", "Architecture overview diagram", "All are false"],
+                    ans: 2
+                },
+                {
+                    q: "Secure design minimizes risk by integrating security at every level of system architecture.",
+                    opts: ["True", "False"],
+                    ans: 0
+                }
+            ]
+        },
+
+        // ==========================================
+        // 2. الوحدة الثانية (Unit 2)
+        // ==========================================
+        {
+            id: "u2",
+            title: "الوحدة 2: نماذج التحكم بالوصول ومبادئ الامتيازات",
+            questions: [
+                {
+                    q: "Which access control model assigns permissions based on the user's role within the organization?",
+                    opts: [
+                        "Role-Based Access Control (RBAC)",
+                        "Attribute-Based Access Control (ABAC)",
+                        "Mandatory Access Control (MAC)",
+                        "Discretionary Access Control (DAC)"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "The principle of Least Common Mechanism advises that:",
+                    opts: [
+                        "Shared mechanisms should be minimized",
+                        "More resources should be shared",
+                        "Users should have admin rights",
+                        "All users should use the same access point"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What is the main goal of the principle of Least Privilege?",
+                    opts: [
+                        "To give users maximum access",
+                        "To limit users to the minimum access needed",
+                        "To restrict users to read-only access",
+                        "To allow all users administrative access"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "In the context of system security, the term 'attack surface' refers to:",
+                    opts: [
+                        "The entire user interface of an application",
+                        "Physical hardware components only",
+                        "All potential entry points for unauthorized access",
+                        "The application's aesthetic design"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "A model that uses specific attributes like user location and device to control access is:",
+                    opts: [
+                        "Role-Based Access Control (RBAC)",
+                        "Attribute-Based Access Control (ABAC)",
+                        "Mandatory Access Control (MAC)",
+                        "Discretionary Access Control (DAC)"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "In a system using Role-Based Access Control (RBAC), who would likely have the broadest access rights?",
+                    opts: ["Regular users", "Contractors", "Administrators", "Guests"],
+                    ans: 2
+                },
+                {
+                    q: "The principle of Least Privilege states that users should have the maximum level of access possible to perform their tasks.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "The goal of minimizing the attack surface is to reduce the number of entry points that an attacker could exploit.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Separation of Privilege ensures that no single individual or process has complete control over sensitive tasks or resources.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Role-Based Access Control (RBAC) assigns permissions based on a user's specific role within the organization.",
+                    opts: ["True", "False"],
+                    ans: 0
+                }
+            ]
+        },
+
+        // ==========================================
+        // 3. الوحدة الثالثة (Unit 3)
+        // ==========================================
+        {
+            id: "u3",
+            title: "الوحدة 3: الدفاع في العمق وفصل المهام",
+            questions: [
+                {
+                    q: "What is the main goal of Defense in Depth?",
+                    opts: ["Limiting user privileges", "Encrypting all data", "Allowing more users access", "Using multiple security layers"],
+                    ans: 3
+                },
+                {
+                    q: "Encapsulation is primarily used to:",
+                    opts: [
+                        "Restrict access to certain parts of a system",
+                        "Increase network speed",
+                        "Share all system resources",
+                        "Enable unrestricted data access"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What does Separation of Duties aim to prevent?",
+                    opts: [
+                        "Unauthorized data sharing",
+                        "Insider threats and conflicts of interest",
+                        "Increased user privileges",
+                        "User access to sensitive data"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "What is the purpose of Secure Coding Patterns?",
+                    opts: [
+                        "To simplify code for all users",
+                        "To prevent security vulnerabilities in code",
+                        "To allow easier debugging",
+                        "To grant administrative permissions"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Secure coding practices include:",
+                    opts: [
+                        "Ignoring error handling",
+                        "Allowing unrestricted file access",
+                        "Input validation and sanitization",
+                        "Disabling authentication checks"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "In Separation of Duties, critical functions are typically:",
+                    opts: [
+                        "Divided among multiple individuals",
+                        "Controlled by one person",
+                        "Ignored for simplicity",
+                        "Accessible to all employees"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "Isolation in system design helps to improve user experience.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Defense in Depth means relying on a single layer of security to protect the system.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Separation of Duties reduces the risk of insider threats by dividing responsibilities among multiple individuals.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Isolation in cybersecurity means combining system components to reduce security complexity.",
+                    opts: ["True", "False"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 4. الوحدة الرابعة (Unit 4)
+        // ==========================================
+        {
+            id: "u4",
+            title: "الوحدة 4: اقتصاد الآلية والتصميم المفتوح",
+            questions: [
+                {
+                    q: "What is the main goal of the Economy of Mechanism principle?",
+                    opts: [
+                        "Increase system complexity",
+                        "Keep system designs simple to reduce vulnerabilities",
+                        "Allow more user access",
+                        "Hide all system mechanisms"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "According to the Economy of Mechanism, systems should be:",
+                    opts: [
+                        "Complex to avoid reverse engineering",
+                        "Simple and straightforward",
+                        "Hidden to ensure security",
+                        "Difficult to manage"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which principle advises against hiding system mechanisms as the only form of security?",
+                    opts: ["Complete Mediation", "Economy of Mechanism", "Security by Obscurity", "Open Design"],
+                    ans: 3
+                },
+                {
+                    q: "In Complete Mediation, every access request is:",
+                    opts: [
+                        "Verified only once",
+                        "Checked for permissions at each access point",
+                        "Approved by default",
+                        "Ignored if the user has previous access"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A benefit of modularity in design is:",
+                    opts: [
+                        "Increased risk of breaches",
+                        "Easier system updates and targeted security improvements",
+                        "Centralized design that reduces transparency",
+                        "Maximized system complexity"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Open-source software exemplifies the Open Design principle by allowing public scrutiny.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Open Design encourages transparency in security mechanisms rather than relying on secrecy.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Modularity allows systems to have isolated, independent components for better control and security.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "The Economy of Mechanism principle promotes adding complexity to system design to enhance security.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Security by Obscurity is a recommended primary security approach for critical systems.",
+                    opts: ["True", "False"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 5. الوحدة الخامسة (Unit 5)
+        // ==========================================
+        {
+            id: "u5",
+            title: "الوحدة 5: التصميم الآمن والقبول النفسي",
+            questions: [
+                {
+                    q: "What is the primary goal of Secure by Design?",
+                    opts: [
+                        "Adding security at the end of the development process",
+                        "Integrating security from the beginning of design",
+                        "Relying on secrecy for security",
+                        "Focusing only on usability"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Fail Secure primarily focuses on:",
+                    opts: [
+                        "Allowing open access during system failures",
+                        "Maintaining security even if functionality is limited",
+                        "Reducing user interaction",
+                        "Making systems predictable"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "The principle of Psychological Acceptability in security design emphasizes:",
+                    opts: [
+                        "Making security measures complex for users",
+                        "Using multiple layers of security",
+                        "Restricting access to only administrators",
+                        "Ensuring security features are user-friendly"
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "Fail-Safe Defaults mean that when a system encounters a failure, it should:",
+                    opts: [
+                        "Grant all access to prevent disruptions",
+                        "Default to a secure state",
+                        "Keep operating without any change",
+                        "Ignore security protocols"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which security principle ensures that access is restricted by default?",
+                    opts: ["Fail-Safe Defaults", "Fail Secure", "Psychological Acceptability", "Least Astonishment"],
+                    ans: 0
+                },
+                {
+                    q: "What does minimizing the trust surface involve?",
+                    opts: [
+                        "Increasing the number of components requiring trust",
+                        "Granting users complete trust in all components",
+                        "Reducing the number of trusted components",
+                        "Ignoring secure components"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "The principle of Fail-Safe Defaults ensures that systems grant access by default when errors occur.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Secure by Design means that security is considered from the start of the design process.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Minimizing the trust surface involves reducing the number of components in a system that need to be trusted.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "The objective of Fail-Safe Defaults is to allow unrestricted access during system failures to maintain functionality.",
+                    opts: ["True", "False"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 6. الوحدة السادسة (Unit 6)
+        // ==========================================
+        {
+            id: "u6",
+            title: "الوحدة 6: إدارة الهوية وأمن الشبكات والبيانات",
+            questions: [
+                {
+                    q: "What is the main focus of Identity and Access Management (IAM)?",
+                    opts: [
+                        "Verifying user identity and managing access",
+                        "Device encryption",
+                        "Application development",
+                        "Network segmentation"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "An example of 'something you know' in IAM authentication is:",
+                    opts: ["A fingerprint", "A physical key", "A password", "A location-based restriction"],
+                    ans: 2
+                },
+                {
+                    q: "In network security, a firewall primarily serves to:",
+                    opts: ["Store data securely", "Device encryption", "Application development", "Encrypt data"],
+                    ans: 3
+                },
+                {
+                    q: "Which network security technology provides secure communication over an untrusted network?",
+                    opts: ["VPN", "Firewall", "SIEM", "PAM"],
+                    ans: 0
+                },
+                {
+                    q: "In a tri-homed network segmentation, how many network interfaces are used?",
+                    opts: ["One", "Two", "Three", "Four"],
+                    ans: 2
+                },
+                {
+                    q: "Endpoint Security primarily focuses on securing which of the following?",
+                    opts: ["Network traffic", "User passwords", "Individual devices like laptops and mobile phones", "Firewalls"],
+                    ans: 2
+                },
+                {
+                    q: "Which of the following is NOT one of the 'four A's' in IAM?",
+                    opts: ["Administration", "Authorization", "Authentication", "Automation"],
+                    ans: 3
+                },
+                {
+                    q: "Which layer would a Secure Socket Layer (SSL) VPN operate in?",
+                    opts: ["Application layer", "Data link layer", "Transport layer", "Network layer"],
+                    ans: 0
+                },
+                {
+                    q: "Network segmentation improves security by isolating sensitive parts of a network from less secure areas.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Secure Access Service Edge (SASE) combines network security functions with wide area network (WAN) capabilities and both delivered from the cloud.",
+                    opts: ["True", "False"],
+                    ans: 0
+                }
+            ]
+        },
+
+        // ==========================================
+        // 7. الواجب الأول (Homework 1)
+        // ==========================================
+        {
+            id: "hw1",
+            title: "الواجب الأول (Homework 1)",
+            questions: [
+                {
+                    q: "Secure design is a process of integrating security principles on the last stage.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Secure design minimizes risk by integrating security at every level of system architecture.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Encapsulation allows unrestricted access to a system's internal components for improved usability.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Separation of Duties reduces the risk of insider threats by dividing responsibilities among multiple individuals.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "The principle of Least Privilege states that users should have the maximum level of access possible to perform their tasks.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "What does the CIA Triad stand for in cybersecurity?",
+                    opts: [
+                        "Control, Integrity, and Authentication",
+                        "Confidentiality, Integrity, and Availability",
+                        "Confidentiality, Isolation, and Access",
+                        "Compliance, Investigation, and Accessibility"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which principle emphasizes dividing tasks to reduce risk?",
+                    opts: ["Isolation", "Layering", "Separation of Duties", "Trust Boundaries"],
+                    ans: 2
+                },
+                {
+                    q: "In the principle of Separation of Privilege, access rights are typically:",
+                    opts: [
+                        "Granted to a single user",
+                        "Confidentiality, Integrity, and Availability",
+                        "Confidentiality, Isolation, and Access",
+                        "Removed after first use"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "The diagram that shows the relationships among different entities like: builder, marketing, trade, and buyer is:",
+                    opts: ["Business context diagram", "System context diagram", "Architecture overview diagram", "All are false"],
+                    ans: 0
+                },
+                {
+                    q: "An example of the principle of Least Privilege is:",
+                    opts: [
+                        "All employees having full database access",
+                        "Doctors having access only to patients they treat",
+                        "Granting temporary administrative rights to all users",
+                        "None of the above"
+                    ],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 8. النشاط الأول (Activity 1)
+        // ==========================================
+        {
+            id: "act1",
+            title: "النشاط الأول (Activity 1)",
+            questions: [
+                {
+                    q: "Access control consists of authentication and automation.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "In Mandatory Access Control (MAC), access decisions are made at the user's discretion.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Secure design helps reduce vulnerabilities by addressing security early.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Secure coding patterns, such as input validation, help prevent vulnerabilities in software applications.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Separation of Privilege ensures that no single individual or process has complete control over sensitive tasks or resources.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "______ refers to the quality of the data being complete.",
+                    opts: ["Integrity", "Availability", "Confidentiality", "security"],
+                    ans: 0
+                },
+                {
+                    q: "Which principle emphasizes dividing tasks to reduce risk?",
+                    opts: ["Isolation", "Layering", "Separation of Duties", "Trust Boundaries"],
+                    ans: 2
+                },
+                {
+                    q: "Which of the following is an example of Defense in Depth?",
+                    opts: [
+                        "Combining firewalls, intrusion detection systems, and antivirus software",
+                        "Using a firewall only",
+                        "Allowing open access to the network",
+                        "Encrypting all traffic without other controls"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "The principle of Complete Mediation ensures that:",
+                    opts: [
+                        "Permissions are only reviewed once",
+                        "Users are allowed unlimited access after logging in",
+                        "Every access request is authorized",
+                        "System logs are deleted after each session"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "Which access control model assigns permissions based on the user's role within the organization?",
+                    opts: [
+                        "Attribute-Based Access Control (ABAC)",
+                        "Role-Based Access Control (RBAC)",
+                        "Mandatory Access Control (MAC)",
+                        "Discretionary Access Control (DAC)"
+                    ],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 9. الواجب الثاني (Homework 2)
+        // ==========================================
+        {
+            id: "hw2",
+            title: "الواجب الثاني (Homework 2)",
+            questions: [
+                {
+                    q: "The principle of Modularity in design aims to:",
+                    opts: [
+                        "Design systems as independent, interchangeable components",
+                        "Create one large, interconnected system",
+                        "Combine all functionalities in a single module",
+                        "Allow unrestricted access to all modules"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "The purpose of Complete Mediation is to:",
+                    opts: [
+                        "Grant users full access after initial login",
+                        "Check every access request to a resource",
+                        "Allow unrestricted access to files",
+                        "Simplify the user interface"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which network security technology provides secure communication over an untrusted network?",
+                    opts: ["VPN", "SIEM", "Firewall", "PAM"],
+                    ans: 0
+                },
+                {
+                    q: "Fail Secure primarily focuses on:",
+                    opts: [
+                        "Allowing open access during system failures",
+                        "Reducing user interaction",
+                        "Maintaining security even if functionality is limited",
+                        "Making systems predictable"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What does minimizing the trust surface involve?",
+                    opts: [
+                        "Increasing the number of components requiring trust",
+                        "Granting users complete trust in all components",
+                        "Reducing the number of trusted components",
+                        "Ignoring secure components"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "The purpose of modularity is to create a single, unified component to handle all functions.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Least Astonishment means systems should behave in ways that surprise users to improve security.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Open Design encourages transparency in security mechanisms rather than relying on secrecy.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Endpoint Security focuses on protecting individual devices, such as laptops, mobile phones, and desktops.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Psychological Acceptability aims to make security features as user-friendly as possible to encourage compliance.",
+                    opts: ["True", "False"],
+                    ans: 0
+                }
+            ]
+        },
+
+        // ==========================================
+        // 10. النشاط الثاني (Activity 2)
+        // ==========================================
+        {
+            id: "act2",
+            title: "النشاط الثاني (Activity 2)",
+            questions: [
+                {
+                    q: "The principle of Modularity in design aims to:",
+                    opts: [
+                        "Create one large, interconnected system",
+                        "Design systems as independent, interchangeable components",
+                        "Combine all functionalities in a single module",
+                        "Allow unrestricted access to all modules"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "What is the purpose of patch management in Endpoint Security?",
+                    opts: [
+                        "To monitor user behavior",
+                        "To ensure devices have the latest security updates",
+                        "To control network traffic",
+                        "To grant users privileged access"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "In Complete Mediation, every access request is:",
+                    opts: [
+                        "Checked for permissions at each access point",
+                        "Verified only once",
+                        "Approved by default",
+                        "Ignored if the user has previous access"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What is an example of Fail Secure?",
+                    opts: [
+                        "Allowing free access during a system failure",
+                        "Enabling users to bypass login during failures",
+                        "Providing error messages without restricting access",
+                        "Locking doors automatically during power outages"
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "Which of the following is NOT a typical element of data security?",
+                    opts: ["Governance", "Discovery", "Compliance", "Network segmentation"],
+                    ans: 3
+                },
+                {
+                    q: "Complete Mediation requires continuous permission verification for resource access.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Psychological Acceptability aims to make security features as user-friendly as possible to encourage compliance.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "The objective of Fail-Safe Defaults is to allow unrestricted access during system failures to maintain functionality.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "The DevOps approach is more secure than the DevSecOps approach.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Privileged Access Management (PAM) controls regular user accounts rather than high-level administrative accounts.",
+                    opts: ["True", "False"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 11. الميد (Midterm Exam)
+        // ==========================================
+        {
+            id: "mid",
+            title: "اختبار الميد (Midterm Exam)",
+            questions: [
+                {
+                    q: "How does encryption help ensure confidentiality?",
+                    opts: [
+                        "By allowing only administrators to view data.",
+                        "By preventing access to all users.",
+                        "By making data publicly available.",
+                        "By transforming data so unauthorized users cannot read it."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "Secure system design only protects against external threats, not internal threats.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Which of the following is an example of the Separation of Privilege principle?",
+                    opts: [
+                        "Giving a network administrator full access to all systems.",
+                        "Splitting financial transactions so that multiple people must approve them.",
+                        "Allowing all employees access to all company documents.",
+                        "Storing all sensitive data in one unprotected location."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "The Least Privilege principle means that a user should have all the permissions available to any other user.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "Mandatory Access Control (MAC) allows users to choose who can access their data.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "What is the primary goal of secure system design?",
+                    opts: [
+                        "To allow open access to all users.",
+                        "To improve system speed.",
+                        "To reduce vulnerabilities and control risks.",
+                        "To make systems more complex."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What is the primary benefit of minimizing the attack surface?",
+                    opts: [
+                        "Allowing all inbound and outbound connections without restrictions.",
+                        "Improving system performance without security considerations.",
+                        "Reducing the number of points that attackers can exploit.",
+                        "Increasing the number of available system functions."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "Role-Based Access Control (RBAC) assigns permissions based on a user's job function.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Separation of Privilege helps prevent unauthorized access and reduces the risk of internal fraud.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "What does the CIA Triad stand for in cybersecurity?",
+                    opts: [
+                        "Confidentiality, Integrity, and Availability.",
+                        "Control, Integrity, and Authentication.",
+                        "Confidentiality, Isolation, and Access.",
+                        "Compliance, Investigation, and Accessibility."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What is a common threat to Availability in cybersecurity?",
+                    opts: [
+                        "Role-Based Access Control (RBAC).",
+                        "Encryption of sensitive data.",
+                        "A Denial of Service (DoS) attack.",
+                        "A strong firewall."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What is the main goal of the Least Privilege principle?",
+                    opts: [
+                        "To give users maximum access.",
+                        "To restrict users to the minimum access necessary.",
+                        "To limit users to read-only access.",
+                        "To allow all users administrative access."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Which of the following is an example of Integrity in cybersecurity?",
+                    opts: [
+                        "Allowing all users to access confidential data.",
+                        "Encrypting sensitive messages.",
+                        "Using digital signatures to verify data authenticity.",
+                        "Ensuring a system is available at all times."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "A strong password policy is an example of an Integrity control.",
+                    opts: ["True", "False"],
+                    ans: 1
+                },
+                {
+                    q: "What is a key solution to the problem of Permission Creep?",
+                    opts: [
+                        "Regularly reviewing and revoking unnecessary permissions.",
+                        "Allowing users to define their own privileges.",
+                        "Increasing privileges for all users.",
+                        "Granting administrative rights to all users."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "Which access control model is based on job roles?",
+                    opts: [
+                        "Mandatory Access Control (MAC).",
+                        "Role-Based Access Control (RBAC).",
+                        "Discretionary Access Control (DAC).",
+                        "Attribute-Based Access Control (ABAC)."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Confidentiality ensures that only authorized users can access data.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Minimizing the attack surface means reducing the number of features that attackers can exploit to breach the system.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "Availability in cybersecurity means ensuring systems and data are accessible when needed.",
+                    opts: ["True", "False"],
+                    ans: 0
+                },
+                {
+                    q: "The CIA Triad is the only cybersecurity model used to design secure systems.",
+                    opts: ["True", "False"],
+                    ans: 1
+                }
+            ]
+        },
+
+        // ==========================================
+        // 12. الفاينل (Final Exam)
+        // ==========================================
+        {
+            id: "final",
+            title: "الاختبار النهائي (Final Exam)",
+            questions: [
+                {
+                    q: "What is the main focus of Identity and Access Management (IAM)?",
+                    opts: [
+                        "Verifying user identity and managing access",
+                        "Device encryption",
+                        "Application development",
+                        "Network segmentation"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "In network security, a firewall primarily serves to:",
+                    opts: ["Store data securely", "Device encryption", "Application development", "Encrypt data"],
+                    ans: 3
+                },
+                {
+                    q: "______ is one of the cybersecurity domains that give a quick response for any problem.",
+                    opts: ["Endpoint security", "Network security", "Response", "Application security"],
+                    ans: 2
+                },
+                {
+                    q: "______ is one of the cybersecurity domains that making sure their device is secure and can be trusted.",
+                    opts: ["Endpoint security", "Network security", "Data security", "Application security"],
+                    ans: 0
+                },
+                {
+                    q: "Fail-Safe Defaults mean that when a system encounters a failure, it should:",
+                    opts: [
+                        "Grant all access to prevent disruptions",
+                        "Default to a secure state",
+                        "Keep operating without any change",
+                        "Ignore security protocols"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "The block diagram represents cybersecurity domains. Select the correct matching mapping:",
+                    opts: [
+                        "1-B. Monitor | 2-A. Network | 3-C. Firewall | 4-D. Application | 5-H. Data",
+                        "1-A. Network | 2-B. Monitor | 3-C. Firewall | 4-D. Application | 5-H. Data",
+                        "1-C. Firewall | 2-A. Network | 3-B. Monitor | 4-H. Data | 5-D. Application",
+                        "1-D. Application | 2-H. Data | 3-A. Network | 4-B. Monitor | 5-C. Firewall"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "Match the scenario with its matching logic flaw concept:\n\nScenario: A user is granted admin privileges after only verifying their email.",
+                    opts: [
+                        "Demonstrates a logic flaw in an authentication implementation",
+                        "Effective error-based SQL injection structure",
+                        "Brute-force valid username detection discrepancy",
+                        "Predictable user password patterns"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "An example of the principle of Least Privilege is:",
+                    opts: [
+                        "All employees having full database access",
+                        "Doctors having access only to patients they treat",
+                        "Granting temporary administrative rights to all users",
+                        "None of the above"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "The principle of Modularity in design aims to:",
+                    opts: [
+                        "Design systems as independent, interchangeable components",
+                        "Create one large, interconnected system",
+                        "Combine all functionalities in a single module",
+                        "Allow unrestricted access to all modules"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What is the main goal of Defense in Depth?",
+                    opts: ["Limiting user privileges", "Encrypting all data", "Allowing more users access", "Using multiple security layers"],
+                    ans: 3
+                },
+                {
+                    q: "The principle of Psychological Acceptability in security design emphasizes:",
+                    opts: [
+                        "Making security measures complex for users",
+                        "Using multiple layers of security",
+                        "Restricting access to only administrators",
+                        "Ensuring security features are user-friendly"
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "The principle of Least Common Mechanism advises that:",
+                    opts: [
+                        "Shared mechanisms should be minimized",
+                        "More resources should be shared",
+                        "Users should have admin rights",
+                        "All users should use the same access point"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "In Complete Mediation, every access request is:",
+                    opts: [
+                        "Checked for permissions at each access point",
+                        "Verified only once",
+                        "Approved by default",
+                        "Ignored if the user has previous access"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "Which of the following is NOT a typical element of data security?",
+                    opts: ["Governance", "Discovery", "Compliance", "Network segmentation"],
+                    ans: 3
+                },
+                {
+                    q: "The principle of Complete Mediation ensures that:",
+                    opts: [
+                        "Permissions are only reviewed once",
+                        "Users are allowed unlimited access after logging in",
+                        "Every access request is authorized",
+                        "System logs are deleted after each session"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "Fail Secure primarily focuses on:",
+                    opts: [
+                        "Allowing open access during system failures",
+                        "Maintaining security even if functionality is limited",
+                        "Reducing user interaction",
+                        "Making systems predictable"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "In a tri-homed network segmentation, how many network interfaces are used?",
+                    opts: ["One", "Two", "Three", "Four"],
+                    ans: 2
+                },
+                {
+                    q: "In the context of system security, the term 'attack surface' refers to:",
+                    opts: [
+                        "The entire user interface of an application",
+                        "Physical hardware components only",
+                        "All potential entry points for unauthorized access",
+                        "The application's aesthetic design"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What is an example of Fail Secure?",
+                    opts: [
+                        "Allowing free access during a system failure",
+                        "Enabling users to bypass login during failures",
+                        "Providing error messages without restricting access",
+                        "Locking doors automatically during power outages"
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "The diagram that consists of project database, scheduler, report, and alerts is:",
+                    opts: [
+                        "System context diagram",
+                        "Business context diagram",
+                        "Architecture overview diagram",
+                        "All are false"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "Which principle advises against hiding system mechanisms as the only form of security?",
+                    opts: ["Complete Mediation", "Economy of Mechanism", "Security by Obscurity", "Open Design"],
+                    ans: 3
+                },
+                {
+                    q: "What does minimizing the trust surface involve?",
+                    opts: [
+                        "Increasing the number of components requiring trust",
+                        "Granting users complete trust in all components",
+                        "Reducing the number of trusted components",
+                        "Ignoring secure components"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "Which access control model assigns permissions based on the user's role within the organization?",
+                    opts: [
+                        "Attribute-Based Access Control (ABAC)",
+                        "Role-Based Access Control (RBAC)",
+                        "Mandatory Access Control (MAC)",
+                        "Discretionary Access Control (DAC)"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "A benefit of modularity in design is:",
+                    opts: [
+                        "Increased risk of breaches",
+                        "Easier system updates and targeted security improvements",
+                        "Centralized design that reduces transparency",
+                        "Maximized system complexity"
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Encapsulation is primarily used to:",
+                    opts: [
+                        "Restrict access to certain parts of a system",
+                        "Increase network speed",
+                        "Share all system resources",
+                        "Enable unrestricted data access"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "In the principle of Separation of Privilege, access rights are typically:",
+                    opts: [
+                        "Granted to a single user",
+                        "Confidentiality, Integrity, and Availability",
+                        "Confidentiality, Isolation, and Access",
+                        "Removed after first use"
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "______ refers to the quality of the data being complete.",
+                    opts: ["Integrity", "Availability", "Confidentiality", "security"],
+                    ans: 0
+                },
+                {
+                    q: "The diagram that shows the relationships among different entities like: builder, marketing, trade, and buyer is:",
+                    opts: ["Business context diagram", "System context diagram", "Architecture overview diagram", "All are false"],
+                    ans: 0
+                },
+                {
+                    q: "Secure coding practices include:",
+                    opts: [
+                        "Ignoring error handling",
+                        "Allowing unrestricted file access",
+                        "Input validation and sanitization",
+                        "Disabling authentication checks"
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "A model that uses specific attributes like user location and device to control access is:",
+                    opts: [
+                        "Role-Based Access Control (RBAC)",
+                        "Attribute-Based Access Control (ABAC)",
+                        "Mandatory Access Control (MAC)",
+                        "Discretionary Access Control (DAC)"
+                    ],
+                    ans: 1
+                }
+            ]
+        }
+    ];
+
+    const tabsBar = document.getElementById('tabsBar');
+    const contentSections = document.getElementById('contentSections');
+
+    // الدالة الرئيسية لبناء وتوليد واجهة المستخدم برمجياً
+    function buildInterface() {
+        completeDatabase.forEach((section, sIdx) => {
+            // 1. إنشاء التبويبات العلوية
+            const tabBtn = document.createElement('button');
+            tabBtn.type = 'button';
+            tabBtn.className = `tab-btn ${sIdx === 0 ? 'active' : ''}`;
+            
+            // سحب الاسم وتنسيقه ليكون مناسباً للشريط
+            let shortName = section.title.split(':')[0].replace(/\(.*?\)/g, '').trim();
+            tabBtn.innerText = shortName;
+            tabBtn.onclick = (e) => switchSection(sIdx, e.target);
+            tabsBar.appendChild(tabBtn);
+
+            // 2. إنشاء المحتوى الداخلي للأسئلة
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = `section-content ${sIdx === 0 ? 'active' : ''}`;
+            sectionDiv.id = `sec-${sIdx}`;
+
+            let htmlContent = `
+                <div class="section-header">
+                    <h2 class="section-title">${section.title}</h2>
+                    <span class="question-count-badge">${section.questions.length} أسئلة</span>
+                </div>
+            `;
+
+            section.questions.forEach((qItem, qIdx) => {
+                let optionsHtml = '';
+                qItem.opts.forEach((optStr, oIdx) => {
+                    optionsHtml += `
+                        <li>
+                            <label class="option-label" id="lbl-${sIdx}-${qIdx}-${oIdx}">
+                                <input type="radio" name="q_${sIdx}_${qIdx}" value="${oIdx}">
+                                <span>${optStr}</span>
+                            </label>
+                        </li>
+                    `;
+                });
+
+                htmlContent += `
+                    <div class="question-card">
+                        <div class="question-text">${qIdx + 1}. ${qItem.q}</div>
+                        <ul class="options-group">
+                            ${optionsHtml}
+                        </ul>
+                    </div>
+                `;
+            });
+
+            // إضافة زر التسليم ومربع النتيجة لكل قسم
+            htmlContent += `
+                <div class="submit-area">
+                    <button type="button" class="action-btn" onclick="submitAnswers(${sIdx})">
+                        تحقق من الإجابات (${shortName})
+                    </button>
+                    <div class="score-display" id="res-${sIdx}"></div>
+                </div>
+            `;
+
+            sectionDiv.innerHTML = htmlContent;
+            contentSections.appendChild(sectionDiv);
+        });
+    }
+
+    // دالة التبديل التفاعلي بين التبويبات
+    function switchSection(targetIdx, clickedBtn) {
+        document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+            btn.classList.toggle('active', idx === targetIdx);
+        });
+
+        document.querySelectorAll('.section-content').forEach((sec, idx) => {
+            sec.classList.toggle('active', idx === targetIdx);
+        });
+
+        // التمرير التلقائي لضبط مكان الزر في منتصف الشاشة للجوال
+        clickedBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    // دالة التصحيح وعرض الملاحظات
+    function submitAnswers(sIdx) {
+        const sectionData = completeDatabase[sIdx];
+        let correctAnswersCount = 0;
+        let missedQuestions = false;
+
+        sectionData.questions.forEach((qItem, qIdx) => {
+            const selectedRadio = document.querySelector(`input[name="q_${sIdx}_${qIdx}"]:checked`);
+            
+            // إزالة التظليل السابق
+            qItem.opts.forEach((_, oIdx) => {
+                document.getElementById(`lbl-${sIdx}-${qIdx}-${oIdx}`).classList.remove('correct-answer', 'wrong-answer');
+            });
+
+            if (selectedRadio) {
+                const answerVal = parseInt(selectedRadio.value);
+                if (answerVal === qItem.ans) {
+                    correctAnswersCount++;
+                    document.getElementById(`lbl-${sIdx}-${qIdx}-${answerVal}`).classList.add('correct-answer');
+                } else {
+                    document.getElementById(`lbl-${sIdx}-${qIdx}-${answerVal}`).classList.add('wrong-answer');
+                    document.getElementById(`lbl-${sIdx}-${qIdx}-${qItem.ans}`).classList.add('correct-answer');
+                }
+            } else {
+                missedQuestions = true;
+                document.getElementById(`lbl-${sIdx}-${qIdx}-${qItem.ans}`).classList.add('correct-answer');
+            }
+        });
+
+        // تحديث وإظهار صندوق النتيجة
+        const resBox = document.getElementById(`res-${sIdx}`);
+        resBox.style.display = 'block';
+        const totalQ = sectionData.questions.length;
+        const scorePercent = Math.round((correctAnswersCount / totalQ) * 100);
+
+        if (scorePercent >= 60) {
+            resBox.style.backgroundColor = '#d1fae5';
+            resBox.style.color = '#065f46';
+            resBox.style.border = '2px solid #10b981';
+            resBox.innerHTML = `🎉 رائع جداً! نتيجتك: <strong>${correctAnswersCount} / ${totalQ}</strong> (${scorePercent}%)`;
+        } else {
+            resBox.style.backgroundColor = '#fee2e2';
+            resBox.style.color = '#991b1b';
+            resBox.style.border = '2px solid #ef4444';
+            resBox.innerHTML = `⚠️ نتيجتك: <strong>${correctAnswersCount} / ${totalQ}</strong> (${scorePercent}%) - يُرجى مراجعة الإجابات الصحيحة المحددة باللون الأخضر.`;
+        }
+
+        if (missedQuestions) {
+            resBox.innerHTML += `<br><span style="font-size:0.85rem; color:#475569; font-weight:normal;">(ملاحظة: تُركت بعض الأسئلة بدون إجابة)</span>`;
+        }
+
+        resBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // تشغيل البناء فور اكتمال تحميل الصفحة
+    window.onload = buildInterface;
+</script>
+
+</body>
+</html>
